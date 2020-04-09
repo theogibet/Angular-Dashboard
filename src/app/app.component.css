@@ -1,3 +1,5 @@
 body {
   background-image: url('../assets/pangolin.jpg');
+  background-size: cover;
+  background-repeat: no-repeat;
 }

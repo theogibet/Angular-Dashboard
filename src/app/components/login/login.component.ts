@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import {FormControl, FormGroupDirective, NgForm,  Validators} from '@angular/forms';
-import {ErrorStateMatcher} from '@angular/material/core';
 import { Router } from '@angular/router';
+import { PangolinService } from '../../services/pangolin.service'
+import {ErrorStateMatcher} from '@angular/material/core';
+import { CookieService } from 'ngx-cookie-service';
+
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
   isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
@@ -19,7 +22,7 @@ export class LoginComponent implements OnInit {
   loading = false;
   submitted = false;
 
-  usernameFormControl = new FormControl('',
+  emailFormControl = new FormControl('',
    [
     Validators.required
   ]);
@@ -31,33 +34,31 @@ export class LoginComponent implements OnInit {
 
   matcher = new MyErrorStateMatcher();
 
-  constructor(private router: Router) { }
+  constructor(private cookieService: CookieService, private router: Router, private Api: PangolinService) { }
 
   ngOnInit(): void {
   }
 
   onSubmit() {
-        this.router.navigate(["friends"]);
+    if (this.passwordFormControl.invalid || this.emailFormControl.invalid) {
+        return;
+    }
 
-        // this.submitted = true;
-        // // reset alerts on submit
-        // this.alertService.clear();
-        //
-        // // stop here if form is invalid
-        // if (this.loginForm.invalid) {
-        //     return;
-        // }
-        //
-        // this.loading = true;
-        // this.authenticationService.login(this.usernameFormControl.value, this.passwordFormControl.value)
-        //     .pipe(first())
-        //     .subscribe(
-        //         data => {
-        //             this.router.navigate([this.returnUrl]);
-        //         },
-        //         error => {
-        //             this.alertService.error(error);
-        //             this.loading = false;
-        //         });
+    this.Api.login(this.emailFormControl.value, this.passwordFormControl.value)
+        .subscribe(
+            data => {
+               data = Object.values(data);
+                if (data == null) {
+                  alert("Email ou Mot de passe incorrect");
+                  return;
+                }
+                this.cookieService.set('id', data[0]);
+                this.cookieService.set('email', data[1]);
+
+                this.router.navigate(["friends"]);
+            },
+            error => {
+                alert("Email ou Mot de passe incorrect");
+            });
     }
 }

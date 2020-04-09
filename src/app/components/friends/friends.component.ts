@@ -1,5 +1,18 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialogRef, MAT_DIALOG_DATA, MatDialog} from '@angular/material';
+import { PangolinService } from '../../services/pangolin.service'
+import {ErrorStateMatcher} from '@angular/material/core';
+import {FormControl, FormGroupDirective, NgForm,  Validators} from '@angular/forms';
+import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
+
+
+
+export class MyErrorStateMatcher implements ErrorStateMatcher {
+  isErrorState(control: FormControl | null, form: FormGroupDirective | NgForm | null): boolean {
+    const isSubmitted = form && form.submitted;
+    return !!(control && control.invalid && (control.dirty || control.touched || isSubmitted));
+  }
+}
 
 @Component({
   selector: 'app-friends',
@@ -10,65 +23,88 @@ export class FriendsComponent implements OnInit {
   pseudo: string;
   username: string;
 
-  friends = [
-    {name: "Julie"},
-    {name: "Mathilde"},
-    {name: "Manon"},
+  friends = [];
 
-  ]
+  submitted = false;
 
-  groups = [
-    {name: "Les gamers"},
-    {name: "Colloc"},
-  ]
+  emailFormControl = new FormControl('',
+   [
+    Validators.required
+  ]);
 
-  constructor(public dialog: MatDialog) { }
+  matcher = new MyErrorStateMatcher();
+
+  constructor(private router: Router, public cookieService: CookieService, private Api: PangolinService) { }
 
 
   ngOnInit(): void {
 
+    this.Api.getFriends(this.cookieService.get('email'))
+        .subscribe(
+            data => {
+               if (data != null) {
+                 let i = 0
+                 while(data[i]) {
+                   this.friends.push(data);
+                   i++;
+                 }
+               }
+            });
+
     let addFriendModal = document.getElementById("addFriendModal");
-    let addGroupModal = document.getElementById("addGroupModal");
     let addFriendBtn = document.getElementById("addFriend");
-    let addGroupBtn = document.getElementById("addGroup");
     let span = document.getElementById("closeFriendModal");
-    let grpSpan = document.getElementById("closeGroupModal");
 
     addFriendBtn.onclick = function() {
       addFriendModal.style.display = "block";
     }
-
-    addGroupBtn.onclick = function() {
-      addGroupModal.style.display = "block";
-    }
-
     span.onclick = function() {
       addFriendModal.style.display = "none";
     }
-
-    grpSpan.onclick = function() {
-      addGroupModal.style.display = "none";
-    }
-
     window.onclick = function(event) {
       if (event.target == addFriendModal) {
         addFriendModal.style.display = "none";
       }
-      if (event.target == addGroupModal) {
-        addGroupModal.style.display = "none";
-      }
     }
+
+
   }
 
-  addFriend(): void {
-    const dialogRef = this.dialog.open(AddFriend, {
-      width: '300px',
-      data: {}
-    });
+  logout () {
+    this.cookieService.delete('id');
+    this.cookieService.delete('email');
+    this.router.navigate(["login"]);
+  }
 
-    dialogRef.afterClosed().subscribe(result => {
-      this.pseudo = result;
-    });
+  deleteFriend(i) {
+    this.Api.deleteFriend(this.cookieService.get('email'), this.friends[0][i]["emailFriend"] )
+        .subscribe(
+            data => {
+              console.log(data)
+              this.friends.splice(i, 1)
+            },
+            error => {
+              console.log(error)
+            })
+  }
+
+  addFriend() {
+    if (this.emailFormControl.value == ""){
+      return
+    }
+    this.Api.addFriend(this.cookieService.get('email'), this.emailFormControl.value )
+        .subscribe(
+            data => {
+            },
+            error => {
+              console.log(error)
+            });
+
+  }
+  closeModal() {
+    let addFriendModal = document.getElementById("addFriendModal");
+    addFriendModal.style.display = "none";
+
   }
 
   openList(evt, name) {
@@ -86,24 +122,4 @@ export class FriendsComponent implements OnInit {
     document.getElementById(name).style.display = "block";
     evt.currentTarget.className += " active";
   }
-}
-
-@Component({
-  selector: 'add-friend',
-  templateUrl: 'add-friend.html',
-})
-export class AddFriend {
-  data: {
-    username: string,
-    pseudo: string,
-  };
-  constructor(
-    public dialogRef: MatDialogRef<AddFriend>) {}
-
-  onNoClick(): void {
-    this.dialogRef.close();
-  }
-
-
-
 }

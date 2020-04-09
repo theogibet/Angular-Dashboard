@@ -1,5 +1,5 @@
 import { Injectable, } from '@angular/core';
-import { HttpClient } from '@angular/common/http'
+import { HttpClient, HttpHeaders } from '@angular/common/http'
 
 @Injectable({
   providedIn: 'root'
@@ -9,26 +9,64 @@ export class PangolinService {
   constructor(private http: HttpClient) {}
 
   private static updateUrl(req: string) {
-    return "https://api.tod.benito.io/" + req
+    return "http://localhost:3000" + req
   }
 
-  get(url: string) {
-    url = PangolinService.updateUrl(url);
-    return this.http.get(url);
+  login(email, password) {
+    let httpOptions = {
+        headers: new HttpHeaders({
+            'accept' : 'application/json',
+            'Content-Type': 'application/json'
+        })
+      };
+    return this.http.get("http://localhost:3000/users/email/"+email+"/password/"+password, httpOptions);
   }
 
-  post(url: string, body: any) {
-    url = PangolinService.updateUrl(url);
-    return this.http.post(url, body);
+  register(body: any) {
+    let httpOptions = {
+        headers: new HttpHeaders({
+            'accept' : 'application/json',
+            'Content-Type': 'application/json'
+        })
+      };
+      return this.http.post("http://localhost:3000/users", body, httpOptions);
   }
 
-  put(url: string, body: any) {
-    url = PangolinService.updateUrl(url);
-    return this.http.put(url, body);
+  getUser(id) {
+    let httpOptions = {
+        headers: new HttpHeaders({
+            'accept' : 'application/json',
+            'Content-Type': 'application/json'
+        })
+      };
+    return this.http.get("http://localhost:3000/users/"+id, httpOptions);
   }
 
-  delete(url: string) {
-    url = PangolinService.updateUrl(url);
-    return this.http.delete(url);
+  getFriends(email) {
+    let httpOptions = {
+        headers: new HttpHeaders({
+            'accept' : 'application/json',
+        })
+      };
+    return this.http.get("http://localhost:3000/friends/emailUser/"+email, httpOptions);
+  }
+
+  deleteFriend(email, friendEmail) {
+    let httpOptions = {
+        headers: new HttpHeaders({
+            'accept' : 'application/json',
+        })
+      };
+    return this.http.delete("http://localhost:3000/friends/emailUser/"+email+"/emailFriend/"+friendEmail, httpOptions);
+  }
+
+  addFriend(email, emailFriend) {
+    let httpOptions = {
+        headers: new HttpHeaders({
+            'accept' : 'application/json',
+            'Content-Type': 'application/json'
+        })
+      };
+      return this.http.post("http://localhost:3000/friends", {emailFriend: emailFriend, emailUser: email}, httpOptions);
   }
 }

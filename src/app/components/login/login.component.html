@@ -8,10 +8,10 @@
     <form class="example-form" (ngSubmit)="onSubmit()">
       <mat-card-content>
         <mat-form-field class="example-full-width">
-          <input matInput [formControl]="usernameFormControl" [errorStateMatcher]="matcher" placeholder="Username">
+          <input matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher" placeholder="Email">
 
-          <mat-error *ngIf="usernameFormControl.hasError('required')">
-            Username is <strong>required</strong>
+          <mat-error *ngIf="emailFormControl.hasError('required')">
+            Email is <strong>required</strong>
           </mat-error>
         </mat-form-field>
 

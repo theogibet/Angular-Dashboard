@@ -5,14 +5,14 @@
       <mat-card-title>Register</mat-card-title>
     </mat-card-header>
 
-    <form class="example-form">
+    <form class="example-form" (ngSubmit)="register()">
 
         <mat-card-content>
         <mat-form-field class="example-full-width">
-          <input matInput [formControl]="usernameFormControl" [errorStateMatcher]="matcher" placeholder="Username">
+          <input matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher" placeholder="Email">
 
-          <mat-error *ngIf="usernameFormControl.hasError('required')">
-            Username is <strong>required</strong>
+          <mat-error *ngIf="emailFormControl.hasError('required')">
+            Email is <strong>required</strong>
           </mat-error>
         </mat-form-field>
 
@@ -23,6 +23,14 @@
                 Password is <strong>required</strong>
           </mat-error>
 
+        </mat-form-field>
+
+        <mat-form-field class="example-full-width">
+          <input matInput number [formControl]="nameFormControl" [errorStateMatcher]="matcher" placeholder="Name">
+
+          <mat-error *ngIf="nameFormControl.hasError('required')">
+                Name is <strong>required</strong>
+          </mat-error>
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
@@ -37,15 +45,15 @@
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Family">
+          <input matInput [formControl]="familyFormControl" placeholder="Family">
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Race">
+          <input matInput [formControl]="raceFormControl" placeholder="Race">
         </mat-form-field>
 
         <mat-form-field class="example-full-width">
-          <input matInput placeholder="Food">
+          <input matInput [formControl]="foodFormControl" placeholder="Food">
         </mat-form-field>
 
       </mat-card-content>

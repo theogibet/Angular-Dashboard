@@ -13,7 +13,9 @@ import { LoginComponent } from './components/login/login.component';
 import { RegisterComponent } from './components/register/register.component';
 import { FriendsComponent } from './components/friends/friends.component';
 import { ProfileComponent } from './components/profile/profile.component';
-import { AddFriend } from './components/friends/friends.component';
+import { HttpClientModule } from '@angular/common/http';
+
+import { CookieService } from 'ngx-cookie-service';
 
 import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material/core';
 
@@ -27,7 +29,6 @@ import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material
     RegisterComponent,
     FriendsComponent,
     ProfileComponent,
-    AddFriend
 
   ],
   imports: [
@@ -38,8 +39,9 @@ import {ErrorStateMatcher, ShowOnDirtyErrorStateMatcher} from '@angular/material
     FlexLayoutModule,
     FormsModule,
     ReactiveFormsModule,
+    HttpClientModule
   ],
-  providers: [{provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}],
+  providers: [CookieService, {provide: ErrorStateMatcher, useClass: ShowOnDirtyErrorStateMatcher}],
   bootstrap: [AppComponent],
 })
 export class AppModule { }

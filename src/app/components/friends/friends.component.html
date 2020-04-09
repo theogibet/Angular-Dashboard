@@ -6,36 +6,24 @@
         <button mat-button class="profile" color="primary" routerLink="/profile" routerLinkActive="active">
           <mat-icon>face</mat-icon> Profile
         </button>
-        <button mat-button class="logout" color="primary" routerLink="/login" routerLinkActive="active">
+        <button mat-button class="logout" color="primary" (click)="logout()">
           <mat-icon>logout</mat-icon> Logout
         </button>
-        <mat-card-title>Contacts</mat-card-title>
+        <mat-card-title>Friends</mat-card-title>
       </mat-card-title>
 
 
     </mat-card-header>
 
-    <div class="tab">
-
-      <div class="friends">
-        <button class="tablinks active" (click)="openList($event, 'Friends')">Friends</button>
-      </div>
-
-      <div class="groups">
-        <button class="tablinks" (click)="openList($event, 'Groups')">Groups</button>
-      </div>
-
-    </div>
-
     <div id="Friends" class="tabcontent" style="display:block">
-      <button mat-button color="warn" id="addFriend">
+      <button mat-button color="warn" id="addFriend" (click)="addFriend()">
         <mat-icon>add</mat-icon>Add friend
       </button>
 
       <mat-list>
-        <mat-list-item *ngFor="let friend of friends">
-          <h3 matLine> {{friend.name}} </h3>
-          <button mat-button color="warn">
+        <mat-list-item *ngFor="let friend of friends;index as i">
+          <h3 matLine> {{friend[i]["emailFriend"]}} </h3>
+          <button mat-button color="warn" (click)=deleteFriend(i)>
             <mat-icon>delete</mat-icon>
           </button>
         </mat-list-item>
@@ -47,31 +35,16 @@
 
       <div class="modal-content">
         <span class="close" id="closeFriendModal">&times;</span>
-        <p>Some text in the Modal..</p>
-      </div>
+        <mat-form-field class="example-full-width">
+          <input matInput [formControl]="emailFormControl" [errorStateMatcher]="matcher" placeholder="Email">
 
-    </div>
+          <mat-error *ngIf="emailFormControl.hasError('required')">
+            Email is <strong>required</strong>
+          </mat-error>
+        </mat-form-field>
 
-    <div id="Groups" class="tabcontent">
-      <button mat-button color="warn" id="addGroup">
-        <mat-icon>add</mat-icon>Create new group
-      </button>
+        <button mat-stroked-button color="primary" (click)=addFriend() class="btn-block">Add friend</button>
 
-      <mat-list>
-        <mat-list-item *ngFor="let group of groups">
-          <h3 matLine> {{group.name}} </h3>
-          <button mat-button color="warn">
-            <mat-icon>delete</mat-icon>
-          </button>
-        </mat-list-item>
-      </mat-list>
-    </div>
-
-    <div id="addGroupModal" class="modal">
-
-      <div class="modal-content">
-        <span class="close" id="closeGroupModal">&times;</span>
-        <p>Some text in the Modal..</p>
       </div>
 
     </div>
