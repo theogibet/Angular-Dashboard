@@ -11,6 +11,7 @@ const routes: Routes = [
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: 'friends', component: FriendsComponent },
+  { path: '_friends', component: FriendsComponent },  
   { path: 'profile', component: ProfileComponent }
 
 ];

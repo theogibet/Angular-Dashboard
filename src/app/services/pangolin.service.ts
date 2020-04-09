@@ -8,11 +8,7 @@ export class PangolinService {
 
   constructor(private http: HttpClient) {}
 
-  private static updateUrl(req: string) {
-    return "http://localhost:3000" + req
-  }
-
-  login(email, password) {
+  login(email: string, password: string) {
     let httpOptions = {
         headers: new HttpHeaders({
             'accept' : 'application/json',
@@ -32,7 +28,7 @@ export class PangolinService {
       return this.http.post("http://localhost:3000/users", body, httpOptions);
   }
 
-  getUser(id) {
+  getUser(id: string) {
     let httpOptions = {
         headers: new HttpHeaders({
             'accept' : 'application/json',
@@ -42,7 +38,17 @@ export class PangolinService {
     return this.http.get("http://localhost:3000/users/"+id, httpOptions);
   }
 
-  getFriends(email) {
+  updateUser(id: string, user: any) {
+    let httpOptions = {
+        headers: new HttpHeaders({
+            'accept' : 'application/json',
+            'Content-Type': 'application/json'
+        })
+      };
+    return this.http.put("http://localhost:3000/users/"+id, user, httpOptions);
+  }
+
+  getFriends(email: string) {
     let httpOptions = {
         headers: new HttpHeaders({
             'accept' : 'application/json',
@@ -51,7 +57,7 @@ export class PangolinService {
     return this.http.get("http://localhost:3000/friends/emailUser/"+email, httpOptions);
   }
 
-  deleteFriend(email, friendEmail) {
+  deleteFriend(email: string, friendEmail: string) {
     let httpOptions = {
         headers: new HttpHeaders({
             'accept' : 'application/json',
@@ -60,7 +66,7 @@ export class PangolinService {
     return this.http.delete("http://localhost:3000/friends/emailUser/"+email+"/emailFriend/"+friendEmail, httpOptions);
   }
 
-  addFriend(email, emailFriend) {
+  addFriend(email: string, emailFriend: string) {
     let httpOptions = {
         headers: new HttpHeaders({
             'accept' : 'application/json',

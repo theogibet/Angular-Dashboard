@@ -3,6 +3,8 @@ import {FormControl, FormGroupDirective, NgForm,  Validators} from '@angular/for
 import {ErrorStateMatcher} from '@angular/material/core';
 import { PangolinService } from '../../services/pangolin.service'
 import { CookieService } from 'ngx-cookie-service';
+import { Router } from '@angular/router';
+
 
 
 export class MyErrorStateMatcher implements ErrorStateMatcher {
@@ -23,46 +25,40 @@ export class ProfileComponent implements OnInit {
     email: "",
     password: "",
     name: "",
-    age: 0,
+    age: "",
     family: "",
     race: "",
-    food: "",
+    food: ""
   };
-
-  emailFormControl = new FormControl(this.user.email,
-   [
-    Validators.required
-  ]);
-
-  passwordFormControl = new FormControl('',
-   [
-    Validators.required
-  ]);
-
-  nameFormControl = new FormControl('',
-   [
-    Validators.required
-  ]);
-
-  ageFormControl = new FormControl('',
-   [
-    Validators.required,
-    Validators.pattern("^[1-9][0-9]?$|^100$"),
-  ]);
 
   matcher = new MyErrorStateMatcher();
 
-  constructor(private cookieService: CookieService, private Api: PangolinService) {
+  constructor(private cookieService: CookieService, private Api: PangolinService, private router: Router) {
     this.Api.getUser(this.cookieService.get('id'))
         .subscribe(
             data => {
-               data = Object.values(data);
-               this.user.email = data[1];
+               this.user.email = data['email'];
+               this.user.password = data['password'];
+               this.user.name = data['name'];
+               this.user.age = data['age'];
+               this.user.family = data['family'];
+               this.user.race = data['race'];
+               this.user.food = data['food'];
+            },
+            error => {
+            })
+    }
+
+  saveUser(){
+    this.Api.updateUser(this.cookieService.get('id'), this.user)
+        .subscribe(
+            data => {
+              this.router.navigate(["friends"]);
             },
             error => {
                 alert("Email ou Mot de passe incorrect");
             })
-    }
+  }
 
   ngOnInit(): void {
 

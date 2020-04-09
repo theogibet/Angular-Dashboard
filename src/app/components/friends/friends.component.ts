@@ -95,10 +95,15 @@ export class FriendsComponent implements OnInit {
     this.Api.addFriend(this.cookieService.get('email'), this.emailFormControl.value )
         .subscribe(
             data => {
+              this.router.navigate(["_friends"]);
             },
             error => {
               console.log(error)
             });
+
+    this.router.navigateByUrl('friends', { skipLocationChange: true }).then(() => {
+        this.router.navigate(['friends']);
+    });
 
   }
   closeModal() {
