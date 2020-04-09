@@ -26,6 +26,38 @@ export class FriendsComponent implements OnInit {
 
 
   ngOnInit(): void {
+
+    let addFriendModal = document.getElementById("addFriendModal");
+    let addGroupModal = document.getElementById("addGroupModal");
+    let addFriendBtn = document.getElementById("addFriend");
+    let addGroupBtn = document.getElementById("addGroup");
+    let span = document.getElementById("closeFriendModal");
+    let grpSpan = document.getElementById("closeGroupModal");
+
+    addFriendBtn.onclick = function() {
+      addFriendModal.style.display = "block";
+    }
+
+    addGroupBtn.onclick = function() {
+      addGroupModal.style.display = "block";
+    }
+
+    span.onclick = function() {
+      addFriendModal.style.display = "none";
+    }
+
+    grpSpan.onclick = function() {
+      addGroupModal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+      if (event.target == addFriendModal) {
+        addFriendModal.style.display = "none";
+      }
+      if (event.target == addGroupModal) {
+        addGroupModal.style.display = "none";
+      }
+    }
   }
 
   addFriend(): void {
