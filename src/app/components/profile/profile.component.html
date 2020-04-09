@@ -1,8 +1,16 @@
-<div class="login-wrapper" fxLayout="row" fxLayoutAlign="center center">
+<div class="profile-wrapper" fxLayout="row" fxLayoutAlign="center center">
 
   <mat-card class="box">
-    <mat-card-header>
-      <mat-card-title>Register</mat-card-title>
+    <mat-card-header class="header">
+      <mat-card-title>
+        <button mat-button class="profile" color="primary" routerLink="/friends" routerLinkActive="active">
+          <mat-icon>home</mat-icon> Friends
+        </button>
+        <button mat-button class="logout" color="primary" routerLink="/login" routerLinkActive="active">
+          <mat-icon>logout</mat-icon> Logout
+        </button>
+          <mat-card-title>Profile</mat-card-title>
+      </mat-card-title>
     </mat-card-header>
 
     <form class="example-form">
@@ -50,9 +58,9 @@
 
       </mat-card-content>
 
-      <button mat-stroked-button color="accent" class="btn-block">Register</button>
-      <div class="login">
-        <button mat-stroked-button color="accent" routerLink="/login" routerLinkActive="active" class="btn-block">Login</button>
+      <button mat-stroked-button color="accent" routerLink="/friends" routerLinkActive="active" class="btn-block">Back</button>
+      <div class="save">
+        <button mat-stroked-button color="accent" routerLink="/friends" routerLinkActive="active" class="btn-block">Save</button>
       </div>
     </form>
   </mat-card>

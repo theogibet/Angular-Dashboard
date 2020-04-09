@@ -10,11 +10,11 @@ export class MyErrorStateMatcher implements ErrorStateMatcher {
 }
 
 @Component({
-  selector: 'app-register',
-  templateUrl: './register.component.html',
-  styleUrls: ['./register.component.css']
+  selector: 'app-profile',
+  templateUrl: './profile.component.html',
+  styleUrls: ['./profile.component.css']
 })
-export class RegisterComponent implements OnInit {
+export class ProfileComponent implements OnInit {
   usernameFormControl = new FormControl('',
    [
     Validators.required
@@ -33,8 +33,6 @@ export class RegisterComponent implements OnInit {
 
   matcher = new MyErrorStateMatcher();
 
-  Roles: any = ['Admin', 'Author', 'Reader'];
-  selected: any;
   constructor() { }
 
   ngOnInit(): void {

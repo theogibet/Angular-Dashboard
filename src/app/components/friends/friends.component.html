@@ -1,0 +1,61 @@
+<div class="friends-wrapper" fxLayout="row" fxLayoutAlign="center center">
+
+  <mat-card class="box">
+    <mat-card-header class="header">
+      <mat-card-title>
+        <button mat-button class="profile" color="primary" routerLink="/profile" routerLinkActive="active">
+          <mat-icon>face</mat-icon> Profile
+        </button>
+        <button mat-button class="logout" color="primary" routerLink="/login" routerLinkActive="active">
+          <mat-icon>logout</mat-icon> Logout
+        </button>
+        <mat-card-title>Contacts</mat-card-title>
+      </mat-card-title>
+
+
+    </mat-card-header>
+
+    <div class="tab">
+
+      <div class="friends">
+        <button class="tablinks active" (click)="openList($event, 'Friends')">Friends</button>
+      </div>
+
+      <div class="groups">
+        <button class="tablinks" (click)="openList($event, 'Groups')">Groups</button>
+      </div>
+
+    </div>
+
+    <div id="Friends" class="tabcontent" style="display:block">
+      <button mat-button color="warn" (click)="addFriend()">
+        <mat-icon>add</mat-icon>Add friend
+      </button>
+
+      <mat-list>
+        <mat-list-item *ngFor="let friend of friends">
+          <h3 matLine> {{friend.name}} </h3>
+          <button mat-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+
+    </div>
+
+    <div id="Groups" class="tabcontent">
+      <button mat-button color="warn">
+        <mat-icon>add</mat-icon>Create new group
+      </button>
+
+      <mat-list>
+        <mat-list-item *ngFor="let group of groups">
+          <h3 matLine> {{group.name}} </h3>
+          <button mat-button color="warn">
+            <mat-icon>delete</mat-icon>
+          </button>
+        </mat-list-item>
+      </mat-list>
+    </div>
+  </mat-card>
+</div>
