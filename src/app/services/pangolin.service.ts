@@ -39,6 +39,7 @@ export class PangolinService {
   }
 
   updateUser(id: string, user: any) {
+    user._id = id;
     let httpOptions = {
         headers: new HttpHeaders({
             'accept' : 'application/json',
